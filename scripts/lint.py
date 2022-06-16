@@ -6,17 +6,19 @@ from os.path import isfile, isdir, join
 import sys
 
 ignore = [
-    "build",
-    "release",
-    "node_modules",
+    "locked",
     ".git",
     "__pycache__",
     ".vscode",
-    "target"
+    "build",
+    "libs",
+    "lib_repos",
+    "crash_reports",
 ]
 
 ignore_exts = [
-
+    ".ips",
+    ".syms"
 ]
 
 ROOT = "."

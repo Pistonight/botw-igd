@@ -1,0 +1,7 @@
+%rename link                old_link
+
+*link:
+%(old_link) -T ../libs/locked/skyline/application.ld ./syms.ld --shared --gc-sections --build-id=sha1
+
+*startfile:
+crti%O%s crtbegin%O%s

@@ -1,0 +1,5 @@
+[[func]]
+sym = "_ZN4ksys3act11BaseProcMgr7getProcERKN4sead14SafeStringBaseIcEENS2_12TypedBitFlagINS1_10ProcFilterEiEE"
+
+[[data]]
+sym = "_ZN4ksys3act11BaseProcMgr9sInstanceE"

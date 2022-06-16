@@ -1,0 +1,6 @@
+[[func]]
+sym = "_ZN4sead10TextWriter6printfEPKcz"
+uking_name = "sead::TextWriter::printf"
+
+[[func]]
+sym = "_ZN4sead14SafeStringBaseIcEaSERKS1_"

@@ -1,0 +1,58 @@
+[libs.sead] # forked or cloned from open-ead/sead
+path = "lib_repos/sead"
+dirs = ["include"]
+target = "libs/sync/sead"
+    
+[libs.agl] # forked or cloned from open-ead/agl
+path = "lib_repos/agl"
+dirs = ["include"]
+target = "libs/sync/agl"
+
+[libs.nnheaders] # forked or cloned from open-ead/nnheaders
+path = "lib_repos/nnheaders"
+dirs = ["include"]
+target = "libs/sync/nnheaders"
+
+[libs.botw] # forked or cloned from zeldaret/botw
+path = "../botw" # botw is usually a standalone project/repo
+dirs = ["src"]
+target = "libs/sync/botw"
+
+# Linker related settings
+# In the future, we can change this to link against 1.6.0
+[linker]
+target = "build/syms.ld" # path to generate the linker script
+symbol_path = "data/symbols" # path to scan for dumped symbols in botw
+data_symbols = "libs/sync/botw/data/data_symbols.csv" # path to data_symbols.csv
+uking_functions = "libs/sync/botw/data/uking_functions.csv" # path to uking_functions.csv
+
+[ips]
+botwigd_offset = "0x2d91000" # this is used for address conversion for branching
+
+[ips.main150]
+id = "16A91992BBA71201E98756F3BC8F5D2F"
+offset = "0"
+
+[ips.sdk150]
+id = "BA520906609C503227871A314A94FB5F"
+# offset = ??? need to figure out if patching
+
+[ips.subsdk0150]
+id = "D9DE423EFC1512328C3C05378C7CB031"
+# offset = ??? need to figure out if patching
+
+[ftp]
+ip = "your ip" # Your switch ip
+crash_reports = "atmosphere/crash_reports"
+
+[[ftp.file]]
+local = "build/botwigd.nso"
+target = "atmosphere/contents/01007EF00011E000/exefs/subsdk9"
+
+[[ftp.file]]
+local = "build/app.npdm"
+target = "atmosphere/contents/01007EF00011E000/exefs/main.npdm"
+
+[[ftp.file]]
+local = "build/16A91992BBA71201E98756F3BC8F5D2F.ips"
+target = "atmosphere/exefs_patches/botwigd/16A91992BBA71201E98756F3BC8F5D2F.ips"

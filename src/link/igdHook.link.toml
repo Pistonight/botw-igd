@@ -1,0 +1,3 @@
+[[func]]
+sym = "_ZN4ksys3igd4hook41act__Actor__shouldUnloadBecauseOfDistanceEv"
+uking_name = "Actor::shouldUnloadBecauseOfDistance"

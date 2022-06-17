@@ -4,6 +4,7 @@
 # [s]ync    Copy the changed files
 # [f]orward Direction is from external to this repo
 # [r]everse Direction is from this repo to external
+# [i] ignore botw, because it's slow
 
 # Example: libtool.py -fd Will scan this repo and see
 #   if any files are changed when compared to external source
@@ -37,18 +38,18 @@ def process_path(base, target, path, do_copy):
                     shutil.copyfile(base_path, target_path)
                 print("C "+path)
                 return 1
-
-        print("Ignoring type difference, base is file, target is not")
-        return 0
-    if isdir(base_path):
+        else:
+            print("Ignoring type difference, base is file, target is not")
+            return 0
+    elif isdir(base_path):
         count = 0
         if isdir(target_path):
             for sub_path in listdir(base_path):
                 count += process_path(base, target, join(path, sub_path), do_copy)
             return count
-
-        print("Ignoring type difference, base is dir, target is not")
-        return 0
+        else:
+            print("Ignoring type difference, base is dir, target is not")
+            return 0
     return 0
 
 def read_lib_config():
@@ -67,10 +68,17 @@ def is_sync_mode(flags):
     return False
 
 def is_forward_mode(flags):
-    """Scan the falgs for f. """
+    """Scan the flags for f. """
     # In forward mode, the files are compared as if copying from external to this project
     for char in flags:
         if char == "f":
+            return True
+    return False
+
+def ignore_botw(flags):
+    """Scan the flags for i. """
+    for char in flags:
+        if char == "i":
             return True
     return False
 
@@ -86,7 +94,11 @@ def run():
         sys.exit(-1)
     forward_mode = is_forward_mode(flags)
     do_copy = is_sync_mode(flags)
+    ignore_botw_mode = ignore_botw(flags)
     for lib_name in config:
+        if ignore_botw_mode and lib_name == "botw":
+            print("botw ignored")
+            continue
         lib = config[lib_name]
         if forward_mode:
             base_path = lib["path"]

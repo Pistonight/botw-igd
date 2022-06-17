@@ -1,6 +1,6 @@
 #include <skyline/skyline_framework.hpp>
 
-#include "DebugSystem.hpp"
+#include "igdDebugSystem.hpp"
 
 namespace skylineframework {
 

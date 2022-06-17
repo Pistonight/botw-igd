@@ -148,6 +148,7 @@ class FtpWrapper:
 
     def delete_directory(self, sd_path):
         """Recursively delete directory"""
+        sd_path = add_slash_if_need(sd_path)
         directories, files = self.listcontent(sd_path)
         for directory in directories:
             self.delete_directory(join(sd_path, directory))

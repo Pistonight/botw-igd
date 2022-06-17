@@ -18,6 +18,11 @@ path = "../botw" # botw is usually a standalone project/repo
 dirs = ["src"]
 target = "libs/sync/botw"
 
+[libs.xlink2] # part of botw
+path = "../botw/lib/xlink2"
+dirs = ["include"]
+target = "libs/sync/xlink2"
+
 # Linker related settings
 # In the future, we can change this to link against 1.6.0
 [linker]

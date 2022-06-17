@@ -146,6 +146,8 @@ public:
 
     void setDeleteDistance(f32 distance) { mDeleteDistanceSq = sead::Mathf::square(distance); }
 
+    f32 getLodLoadDistanceMultiplier() const { return mLodLoadDistanceMultiplier; }
+
     void clearFlag(ActorFlag flag);
     bool checkFlag(ActorFlag flag) const;
     void setFlag(ActorFlag flag);
@@ -155,6 +157,8 @@ public:
     void setProperties(int x, const sead::Matrix34f& mtx, const sead::Vector3f& vel,
                        const sead::Vector3f& ang_vel, const sead::Vector3f& scale,
                        bool is_life_infinite, int i, int life) const;
+
+    bool shouldUnloadBecauseOfDistance(u32* out_reason);
 
     // FIXME: figure out return types, parameters and names
     virtual s32 getMaxLife();

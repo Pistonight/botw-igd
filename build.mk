@@ -41,6 +41,7 @@ $(LIB_DIR)/locked/libeiffel/include \
 $(LIB_DIR)/sync/agl/include \
 $(LIB_DIR)/sync/sead/include \
 ${LIB_DIR}/sync/nnheaders/include \
+${LIB_DIR}/sync/xlink2/include \
 ${LIB_DIR}/sync/botw/src
 
 # VPATH for make to search for files

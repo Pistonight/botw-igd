@@ -5,3 +5,4 @@ lib_repos
 build
 *.elf
 *.nso
+crash_reports

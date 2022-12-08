@@ -36,7 +36,10 @@ public:
     UnloadCheckData mLastEntranceSPUCD;
     act::BaseProc* mLastEntranceDLC = nullptr;
     UnloadCheckData mLastEntranceDLCUCD;
+    act::BaseProc* mKak007 = nullptr;
+    UnloadCheckData mKak007UCD;
     sead::Vector3f mPlayerPos;
+    f32 mPlayerMoveSpeed;
 
 private:
     void DebugData::RenderActor(sead::TextWriter* textWriter, const char* name, act::Actor* actor,

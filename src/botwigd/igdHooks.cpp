@@ -63,7 +63,17 @@ bool ShouldUnloadBcDistance(act::Actor* actorThis, unsigned int* out_reason) {
             *out_reason = reason;
         }
         return result;
-    } else {
+    }  else if (debugData->mKak007 == actorThis) {
+        auto checkTime = debugData->GetFrameCounter();
+        u32 reason = 0;
+        bool result = sShouldUnloadBcDistanceOriginal(actorThis, &reason);
+        debugData->mKak007UCD.SetData(actorThis, checkTime, result, reason);
+
+        if (out_reason) {
+            *out_reason = reason;
+        }
+        return result;
+    }else {
         return sShouldUnloadBcDistanceOriginal(actorThis, out_reason);
     }
 }

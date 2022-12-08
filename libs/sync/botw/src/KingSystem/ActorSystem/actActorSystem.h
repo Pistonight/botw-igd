@@ -22,11 +22,16 @@ public:
 
     sead::Heap* getEmergencyHeap() const { return mEmergencyHeap; }
     const sead::Vector3f& getPlayerPos() const { return mPlayerPos; }
+    const f32 getPlayerMoveSpeed() const { return mPlayerMoveSpeed; }
+    const void* mc0() const { return m_c0; }
 
 private:
-    u8 temp_0x20[0xd0 - 0x20];
+    u8 temp_0x20[0xc0 - 0x20];
+    void* m_c0;
+    void* m_c8;
     sead::Heap* mEmergencyHeap;
     sead::Vector3f mPlayerPos;
+    f32 mPlayerMoveSpeed;
 };
 
 }  // namespace ksys::act

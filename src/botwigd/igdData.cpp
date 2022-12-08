@@ -1,6 +1,8 @@
 #include "igdData.hpp"
 #include <KingSystem/ActorSystem/actActor.h>
+#include <KingSystem/ActorSystem/actActorSystem.h>
 #include <KingSystem/ActorSystem/actBaseProc.h>
+#include <KingSystem/ActorSystem/actBaseProcMgr.h>
 #include <gfx/seadTextWriter.h>
 #include <math/seadMathCalcCommon.h>
 #include <math/seadVector.h>
@@ -12,89 +14,51 @@ DebugData* DebugData::Instance() {
 }
 
 void DebugData::Render(sead::TextWriter* textWriter) {
+    act::ActorSystem* actSys = act::ActorSystem::instance();
+    if (actSys) {
+        textWriter->printf("mEmergencyHeap 0x%08x\n", actSys->getEmergencyHeap());
+        const char* mc0 = reinterpret_cast<const char*>(actSys->mc0());
+        if(mc0){
+            char* mGameROMPlayerMaybe = const_cast<char*>(mc0) - 0xC38;
+            textWriter->printf("mGameROMPlayerMaybe 0x%016x\n", mGameROMPlayerMaybe);
+            char* pWeapons = mGameROMPlayerMaybe + 0xB90 + 0x8;
+            char* ppBaseproc = pWeapons + 0x58;
+            auto ppBaseProcCast = reinterpret_cast<act::BaseProc**>(ppBaseproc);
+            if(ppBaseProcCast){
+                auto pBaseProc = *ppBaseProcCast;
+                if(pBaseProc){
+                    textWriter->printf("    0x%08x (%02d) %s\n", pBaseProc->getId(), pBaseProc->getId() % 30,
+                            pBaseProc->getName().cstr());
+                }
+            }
+            
+             //act::BaseProc* pBaseProc = reinterpret_cast<act::BaseProc*>(mGameROMPlayerMaybe);
+            
+        }
+        
+    }
     textWriter->printf("sDebugData 0x%08x\n", this);
     textWriter->printf("  mPlayerPos (%.4f, %.4f, %.4f)\n", mPlayerPos.x, mPlayerPos.y,
                        mPlayerPos.z);
+    textWriter->printf("  mPlayerMoveSpeed %.4f\n", mPlayerMoveSpeed);
     textWriter->printf("  mDebugFrameCounter %d\n", mDebugFrameCounter);
     if (mUnloadCheckFrame != -1) {
         textWriter->printf("  mUnloadCheckFrame %02d\n", mUnloadCheckFrame);
     }
 
-    RenderActor(textWriter, "Elevator", reinterpret_cast<act::Actor*>(mLastElevator),
-                mLastElevatorUCD);
-    RenderActor(textWriter, "Entrance", reinterpret_cast<act::Actor*>(mLastEntrance),
-                mLastEntranceUCD);
-    RenderActor(textWriter, "ElevatorSP", reinterpret_cast<act::Actor*>(mLastElevatorSP),
-                mLastElevatorSPUCD);
-    RenderActor(textWriter, "EntranceSP", reinterpret_cast<act::Actor*>(mLastEntranceSP),
-                mLastEntranceSPUCD);
-    RenderActor(textWriter, "EntranceDLC", reinterpret_cast<act::Actor*>(mLastEntranceDLC),
-                mLastEntranceDLCUCD);
-
-    // if (mLastElevator) {
-    //     textWriter->printf("  mLastElevator 0x%08x\n", mLastElevator);
-    //     // ID
-    //     textWriter->printf("    ID 0x%08x (%02d)\n", mLastElevator->getId(),
-    //                        mLastElevator->getId() % 30);
-    //     textWriter->printf("    Name %s\n", mLastElevator->getName().cstr());
-    //     textWriter->printf("    State %d\n", mLastElevator->getState());
-    //     // actor stuff
-    //     act::Actor* elevatorActor = reinterpret_cast<act::Actor*>(mLastElevator);
-    //     textWriter->printf("    Delete Distance %.4f\n", elevatorActor->getDeleteDistance());
-    //     auto mtx = elevatorActor->getMtx();
-    //     // textWriter->printf("    mMtx %.4f %.4f %.4f %.4f\n", mtx.m[0][0], mtx.m[0][1],
-    //     mtx.m[0][2], mtx.m[0][3]);
-    //     // textWriter->printf("         %.4f %.4f %.4f %.4f\n", mtx.m[1][0], mtx.m[1][1],
-    //     mtx.m[1][2], mtx.m[1][3]);
-    //     // textWriter->printf("         %.4f %.4f %.4f %.4f\n", mtx.m[2][0], mtx.m[2][1],
-    //     mtx.m[2][2], mtx.m[2][3]); textWriter->printf("    Coord (mMtx) %.4f %.4f %.4f\n",
-    //     mtx.m[0][3], mtx.m[1][3], mtx.m[2][3]);
-    // }
-
-    // if(mShouldUnloadLastElevator){
-    //     textWriter->printf("  mSULElevator 0x%08x\n", mShouldUnloadLastElevator);
-    //     textWriter->printf("  mSULCheckTime %d\n", mShouldUnloadLastCheckTime);
-    //     textWriter->printf("  mSULCheckResult %s\n", mShouldUnloadLastCheckResult ? "Unload" :
-    //     "Stay Loaded"); textWriter->printf("  mSULReason 0x%x\n", mShouldUnloadLastReason);
-    // }
-
-    // if(mLastDungeonEntranceFar){
-    //     textWriter->printf("  mLastDungeonEntranceFar 0x%08x\n", mLastDungeonEntranceFar);
-    //     // ID
-    //     textWriter->printf("    ID 0x%08x (%02d)\n", mLastDungeonEntranceFar->getId(),
-    //                        mLastDungeonEntranceFar->getId() % 30);
-    //     textWriter->printf("    Name %s\n", mLastDungeonEntranceFar->getName().cstr());
-    //     textWriter->printf("    State %d\n", mLastDungeonEntranceFar->getState());
-    //     // actor stuff
-    //     act::Actor* entranceActor = reinterpret_cast<act::Actor*>(mLastDungeonEntranceFar);
-    //     textWriter->printf("    Delete Distance %.4f\n", entranceActor->getDeleteDistance());
-    //     auto mtx = entranceActor->getMtx();
-    //     // textWriter->printf("    mMtx %.4f %.4f %.4f %.4f\n", mtx.m[0][0], mtx.m[0][1],
-    //     mtx.m[0][2], mtx.m[0][3]);
-    //     // textWriter->printf("         %.4f %.4f %.4f %.4f\n", mtx.m[1][0], mtx.m[1][1],
-    //     mtx.m[1][2], mtx.m[1][3]);
-    //     // textWriter->printf("         %.4f %.4f %.4f %.4f\n", mtx.m[2][0], mtx.m[2][1],
-    //     mtx.m[2][2], mtx.m[2][3]); textWriter->printf("    Coord (mMtx) %.4f %.4f %.4f\n",
-    //     mtx.m[0][3], mtx.m[1][3], mtx.m[2][3]); textWriter->printf("    mLLDM %.4f\n",
-    //     entranceActor->getLodLoadDistanceMultiplier());
-    // }
-
-    // if(mShouldUnloadLastDungeonEntranceFar){
-    //     textWriter->printf("  mSULDungeonEntranceFar 0x%08x\n",
-    //     mShouldUnloadLastDungeonEntranceFar); textWriter->printf("  mSULCheckTimeDEF %d\n",
-    //     mShouldUnloadLastCheckTimeDungeonEntranceFar); textWriter->printf("  mSULCheckResultDEF
-    //     %s\n", mShouldUnloadLastCheckResultDungeonEntranceFar ? "Unload" : "Stay Loaded");
-    //     textWriter->printf("  mSULReasonDEF 0x%x\n", mShouldUnloadLastReasonDungeonEntranceFar);
-    // }
-
-    // if (mLastElevatorSP) {
-    //     textWriter->printf("  mLastElevatorSP 0x%08x\n", mLastElevatorSP);
-    //     // ID
-    //     textWriter->printf("    ID 0x%08x (%02d)\n", mLastElevatorSP->getId(),
-    //                        mLastElevatorSP->getId() % 30);
-    //     textWriter->printf("    Name %s\n", mLastElevatorSP->getName().cstr());
-    //     textWriter->printf("    State %d\n", mLastElevatorSP->getState());
-    // }
+    // RenderActor(textWriter, "Elevator", reinterpret_cast<act::Actor*>(mLastElevator),
+    //             mLastElevatorUCD);
+    // RenderActor(textWriter, "Entrance", reinterpret_cast<act::Actor*>(mLastEntrance),
+    //             mLastEntranceUCD);
+    // RenderActor(textWriter, "ElevatorSP", reinterpret_cast<act::Actor*>(mLastElevatorSP),
+    //             mLastElevatorSPUCD);
+    // RenderActor(textWriter, "EntranceSP", reinterpret_cast<act::Actor*>(mLastEntranceSP),
+    //             mLastEntranceSPUCD);
+    // RenderActor(textWriter, "EntranceDLC", reinterpret_cast<act::Actor*>(mLastEntranceDLC),
+    //             mLastEntranceDLCUCD);
+    RenderActor(textWriter, "Kak007", reinterpret_cast<act::Actor*>(mKak007),
+                mKak007UCD);
+   
 }
 
 void DebugData::RenderActor(sead::TextWriter* textWriter, const char* name, act::Actor* actor,

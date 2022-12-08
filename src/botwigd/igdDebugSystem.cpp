@@ -54,7 +54,8 @@ void ComputeDebugData() {
             debugData->mLastEntranceSP = baseProcMgr->getProc("DgnObj_DungeonEntranceSP", {});
             debugData->mLastEntranceDLC =
                 baseProcMgr->getProc("DgnObj_DLC_ChampionsDungeonEntrance_A_01", {});
-            // //baseProcMgr->forEachProc("DgnObj_EntranceElevatorSP", processor, {});
+            debugData->mKak007 =
+                baseProcMgr->getProc("Npc_Kakariko007", {});
         } else {
             debugData->mLastElevator = nullptr;
             debugData->mLastElevatorUCD.Clear();
@@ -66,6 +67,8 @@ void ComputeDebugData() {
             debugData->mLastEntranceSPUCD.Clear();
             debugData->mLastEntranceDLC = nullptr;
             debugData->mLastEntranceDLCUCD.Clear();
+            debugData->mKak007 = nullptr;
+            debugData->mKak007UCD.Clear();
         }
     } else {
         debugData->mUnloadCheckFrame = -1;
@@ -79,11 +82,14 @@ void ComputeDebugData() {
         debugData->mLastEntranceSPUCD.Clear();
         debugData->mLastEntranceDLC = nullptr;
         debugData->mLastEntranceDLCUCD.Clear();
+        debugData->mKak007 = nullptr;
+        debugData->mKak007UCD.Clear();
     }
 
     act::ActorSystem* actSys = act::ActorSystem::instance();
     if (actSys) {
         debugData->mPlayerPos = actSys->getPlayerPos();
+        debugData->mPlayerMoveSpeed = actSys->getPlayerMoveSpeed();
     }
 }
 
@@ -114,16 +120,6 @@ void RenderDebugScreen(sead::TextWriter* textWriter) {
             // They are usually equal, but if not, print B
             textWriter->printf("  mFrameCounterB    %d\n", systemTimers->mFrameCounterB);
         }
-        // textWriter->printf("  mFrameCounter2    %d\n", systemTimers->mFrameCounter2);
-        // if(systemTimers->mFrameCounter2 != systemTimers->mFrameCounterB2){
-        //     // They are usually equal, but if not, print B2
-        //     textWriter->printf("  mFrameCounterB2   %d\n", systemTimers->mFrameCounterB2);
-        // }
-        // textWriter->printf("  mvfrTimer     %f\n", systemTimers->mVfrTimer);
-        // if(systemTimers->mVfrTimer != systemTimers->mVfrTimer2){
-        //     // They are usually equal, but if not, print 2
-        //     textWriter->printf("  mvfrTimer2    %f\n", systemTimers->mVfrTimer2);
-        // }
     }
     // if (sUnloadCheckFrame != -1) {
     //     textWriter->printf("sUnloadCheckFrame %02d\n", sUnloadCheckFrame);

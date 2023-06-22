@@ -47,7 +47,7 @@ id = "D9DE423EFC1512328C3C05378C7CB031"
 # offset = ??? need to figure out if patching
 
 [ftp]
-ip = "your ip" # Your switch ip
+ip = "192.168.0.161" # Your switch ip
 crash_reports = "atmosphere/crash_reports"
 
 [[ftp.file]]

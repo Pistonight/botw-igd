@@ -24,12 +24,16 @@ void DebugData::Render(sead::TextWriter* textWriter) {
                 mLastElevatorUCD);
     RenderActor(textWriter, "Entrance", reinterpret_cast<act::Actor*>(mLastEntrance),
                 mLastEntranceUCD);
-    RenderActor(textWriter, "ElevatorSP", reinterpret_cast<act::Actor*>(mLastElevatorSP),
-                mLastElevatorSPUCD);
-    RenderActor(textWriter, "EntranceSP", reinterpret_cast<act::Actor*>(mLastEntranceSP),
-                mLastEntranceSPUCD);
-    RenderActor(textWriter, "EntranceDLC", reinterpret_cast<act::Actor*>(mLastEntranceDLC),
-                mLastEntranceDLCUCD);
+    // RenderActor(textWriter, "ElevatorSP", reinterpret_cast<act::Actor*>(mLastElevatorSP),
+    //             mLastElevatorSPUCD);
+    // RenderActor(textWriter, "EntranceSP", reinterpret_cast<act::Actor*>(mLastEntranceSP),
+    //             mLastEntranceSPUCD);
+    // RenderActor(textWriter, "EntranceDLC", reinterpret_cast<act::Actor*>(mLastEntranceDLC),
+    //             mLastEntranceDLCUCD);
+    float targetX = 2040.49;
+    float targetZ = 972.22;
+    sead::Vector3f laknaRokee {targetX, mPlayerPos.y, targetZ};
+    textWriter->printf("  distance to lakna %f\n", (laknaRokee-mPlayerPos).length());
 
     // if (mLastElevator) {
     //     textWriter->printf("  mLastElevator 0x%08x\n", mLastElevator);

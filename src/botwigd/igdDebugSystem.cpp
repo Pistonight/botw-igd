@@ -88,6 +88,7 @@ void ComputeDebugData() {
 }
 
 void RenderDebugScreen(sead::TextWriter* textWriter) {
+    return; // april fools
     if (!textWriter) {
         // Dummy check so we could call this function in skyline so that the linker does not
         // optimize it out

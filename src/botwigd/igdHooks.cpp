@@ -20,9 +20,9 @@ bool ShouldUnloadBcDistance(act::Actor* actorThis, unsigned int* out_reason) {
         debugData->mLastElevatorUCD.SetData(actorThis, checkTime, result, reason);
 
         if (out_reason) {
-            *out_reason = reason;
+            *out_reason = 0;//reason;  april fools
         }
-        return result;
+        return false; // result;  april fools
     } else if (debugData->mLastEntrance == actorThis) {
         auto checkTime = debugData->GetFrameCounter();
         u32 reason = 0;
